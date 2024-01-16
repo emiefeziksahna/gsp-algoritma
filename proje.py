@@ -1,6 +1,7 @@
 from math import *
 import PySimpleGUI as gab
 from itertools import permutations
+import matplotlib.pyplot as plt
 
 def hesapla_mesafe(tur, mesafeler):
     toplam_mesafe = 0
@@ -42,13 +43,25 @@ while True:
         for i in noktalar:
             uzaklikliste0temp = []
             for j in noktalar:
-                
+                ikinoktaarasiuzaklik = sqrt((i[0] - j[0])**2 + (i[1] - j[1])**2)
                 uzaklikliste0temp.append(ikinoktaarasiuzaklik)
-                ikinoktaarasiuzaklik = sqrt((i[0] - j[0])*2 + (i[1] - j[1])*2)
             uzaklikliste.append(uzaklikliste0temp)
         sehirler = list(range(len(noktalar)))
         en_kisa_tur = en_kisa_turu_bul(sehirler, uzaklikliste)
         if en_kisa_tur is not None:
             gab.popup(f"En kısa tur: {en_kisa_tur}\nEn kısa mesafe: {hesapla_mesafe(en_kisa_tur, uzaklikliste)}")
+
+            # Matplotlib ile grafik çizimi
+            x_values = [noktalar[i][0] for i in en_kisa_tur]
+            y_values = [noktalar[i][1] for i in en_kisa_tur]
+
+            plt.plot(x_values, y_values, marker='o')
+            plt.xlim(left=0, right=2162)
+            plt.ylim(bottom=0, top=1454)
+            plt.title('En Kısa Tur')
+            plt.xlabel('X Koordinatı')
+            plt.ylabel('Y Koordinatı')
+            plt.show()
+
         else:
             gab.popup("Çözüm bulunamadı.")
